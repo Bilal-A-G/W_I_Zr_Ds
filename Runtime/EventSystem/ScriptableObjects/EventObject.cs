@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Event", menuName = "Event Objects")]
+[CreateAssetMenu(fileName = "New Event", menuName = "Events/Event Object")]
 public class EventObject : ScriptableObject
 {
     public bool queueable;

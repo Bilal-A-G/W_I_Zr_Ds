@@ -10,11 +10,11 @@ public class GenericReference<T>
     bool isFolded;
 
     [SerializeField]
-    GenericVariable<T> variableValue;
+    GenericValue<T> variableValue;
     [SerializeField]
     T overrideValue;
 
-    public T GetValue() => useOverride ? overrideValue : variableValue.GetValue;
+    public T GetValue() => useOverride ? overrideValue : variableValue.GetValue();
 
     public void SetValue(T value) 
     {
@@ -26,5 +26,10 @@ public class GenericReference<T>
         {
             variableValue.SetValue(value);
         }
-    } 
+    }
+    
+    public static implicit operator T(GenericReference<T> refrence)
+    {
+        return refrence.GetValue();
+    }
 }
