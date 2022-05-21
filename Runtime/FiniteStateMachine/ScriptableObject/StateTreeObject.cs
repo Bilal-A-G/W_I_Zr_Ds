@@ -10,7 +10,6 @@ public class StateTreeObject : ScriptableObject
 
     StateObject currentState;
 
-    [System.NonSerialized]
     List<KeyValuePair<EventObject, GameObject>> queuedActions;
 
 
