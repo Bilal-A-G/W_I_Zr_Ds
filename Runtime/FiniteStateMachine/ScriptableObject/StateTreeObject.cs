@@ -24,8 +24,6 @@ public class StateTreeObject : ScriptableObject
         bool transitioned = TryTransitionState(action, callingObject);
         bool invoked = TryInvokeActionOnState(action, callingObject);
 
-        if (queuedActions.Contains(new EventObjectPairs(callingObject, action))) queuedActions.Remove(new EventObjectPairs(callingObject, action));
-
         if (transitioned || invoked)
         {
             for(int i = 0; i < queuedActions.Count; i++)
@@ -33,7 +31,12 @@ public class StateTreeObject : ScriptableObject
                 bool transitionedFromQueue = TryTransitionState(queuedActions[i].eventObject, queuedActions[i].gameObject);
                 bool invokedFromQueue = TryInvokeActionOnState(queuedActions[i].eventObject, queuedActions[i].gameObject);
 
-                if(transitionedFromQueue || invokedFromQueue) queuedActions.RemoveAt(i);
+                UpdateChildFSM(queuedActions[i].eventObject, queuedActions[i].gameObject);
+
+                if (transitionedFromQueue || invokedFromQueue)
+                {
+                    queuedActions.RemoveAt(i);
+                }
             }
         }
         else
