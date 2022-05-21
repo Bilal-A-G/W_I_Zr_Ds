@@ -24,7 +24,7 @@ public class StateTreeObject : ScriptableObject
         bool transitioned = TryTransitionState(action, callingObject);
         bool invoked = TryInvokeActionOnState(action, callingObject);
 
-        if (transitioned || invoked)
+        if (transitioned)
         {
             for(int i = 0; i < queuedActions.Count; i++)
             {
@@ -36,7 +36,7 @@ public class StateTreeObject : ScriptableObject
                 queuedActions.RemoveAt(i);
             }
         }
-        else
+        else if(!transitioned && !invoked)
         {
             if (action.queueable && !queuedActions.Contains(new EventObjectPairs(callingObject, action)) && action.dequeueLayer == this)
             {
