@@ -9,7 +9,7 @@ public class StateTreeObject : ScriptableObject
     StateObject initialState;
 
     [System.NonSerialized]
-    StateObject currentState;
+    public StateObject currentState;
 
     [System.NonSerialized]
     Dictionary<EventObject, GameObject> queuedActions;
