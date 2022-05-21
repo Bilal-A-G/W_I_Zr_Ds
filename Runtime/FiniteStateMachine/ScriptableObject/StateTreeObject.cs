@@ -8,15 +8,18 @@ public class StateTreeObject : ScriptableObject
     [SerializeField]
     StateObject initialState;
 
-    [System.NonSerialized]
-    public StateObject currentState;
+    StateObject currentState;
 
     [System.NonSerialized]
     Dictionary<EventObject, GameObject> queuedActions;
 
+    private void OnEnable()
+    {
+        currentState = initialState;
+    }
+
     public void UpdateState(EventObject action, GameObject callingObject)
     {
-        if (currentState == null) currentState = initialState;
         if (queuedActions == null) queuedActions = new Dictionary<EventObject, GameObject>();
 
         if (TryTransitionState(action, callingObject) || TryInvokeActionOnState(action, callingObject))
