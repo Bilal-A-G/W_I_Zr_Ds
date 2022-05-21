@@ -10,13 +10,13 @@ public class StateTreeObject : ScriptableObject
 
     StateObject currentState;
 
-    List<KeyValuePair<EventObject, GameObject>> queuedActions;
+    List<EventObjectPairs> queuedActions;
 
 
     private void OnEnable()
     {
         currentState = initialState;
-        queuedActions = new List<KeyValuePair<EventObject, GameObject>>();
+        queuedActions = new List<EventObjectPairs>();
     }
 
     public void UpdateState(EventObject action, GameObject callingObject)
@@ -24,23 +24,23 @@ public class StateTreeObject : ScriptableObject
         bool transitioned = TryTransitionState(action, callingObject);
         bool invoked = TryInvokeActionOnState(action, callingObject);
 
-        if (queuedActions.Contains(new KeyValuePair<EventObject, GameObject>(action, callingObject))) queuedActions.Remove(new KeyValuePair<EventObject, GameObject>(action, callingObject));
+        if (queuedActions.Contains(new EventObjectPairs(callingObject, action))) queuedActions.Remove(new EventObjectPairs(callingObject, action));
 
         if (transitioned || invoked)
         {
-            foreach (KeyValuePair<EventObject, GameObject> kvp in queuedActions)
+            for(int i = 0; i < queuedActions.Count; i++)
             {
-                bool transitionedFromQueue = TryTransitionState(kvp.Key, kvp.Value);
-                bool invokedFromQueue = TryInvokeActionOnState(kvp.Key, kvp.Value);
+                bool transitionedFromQueue = TryTransitionState(queuedActions[i].eventObject, queuedActions[i].gameObject);
+                bool invokedFromQueue = TryInvokeActionOnState(queuedActions[i].eventObject, queuedActions[i].gameObject);
 
-                if(transitionedFromQueue || invokedFromQueue) queuedActions.Remove(new KeyValuePair<EventObject, GameObject>(action, callingObject));
+                if(transitionedFromQueue || invokedFromQueue) queuedActions.RemoveAt(i);
             }
         }
         else
         {
-            if (action.queueable && !queuedActions.Contains(new KeyValuePair<EventObject, GameObject>(action, callingObject)))
+            if (action.queueable && !queuedActions.Contains(new EventObjectPairs(callingObject, action)))
             {
-                queuedActions.Add(new KeyValuePair<EventObject, GameObject>(action, callingObject));
+                queuedActions.Add(new EventObjectPairs(callingObject, action));
             }
         }
 
@@ -101,5 +101,18 @@ public class StateTreeObject : ScriptableObject
         }
 
         return false;
+    }
+}
+
+[System.Serializable]
+public struct EventObjectPairs
+{
+    public GameObject gameObject;
+    public EventObject eventObject;
+
+    public EventObjectPairs(GameObject gameObject, EventObject eventObject)
+    {
+        this.gameObject = gameObject;
+        this.eventObject = eventObject;
     }
 }
