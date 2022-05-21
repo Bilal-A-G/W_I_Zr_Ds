@@ -1,4 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <uie:PropertyField name="Queueable" />
-    <ui:Button text="Raise Event" display-tooltip-when-elided="true" name="InvokeEvent" />
-</ui:UXML>

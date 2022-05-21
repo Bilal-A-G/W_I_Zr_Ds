@@ -28,20 +28,17 @@ public class StateTreeObject : ScriptableObject
         {
             for(int i = 0; i < queuedActions.Count; i++)
             {
-                bool transitionedFromQueue = TryTransitionState(queuedActions[i].eventObject, queuedActions[i].gameObject);
-                bool invokedFromQueue = TryInvokeActionOnState(queuedActions[i].eventObject, queuedActions[i].gameObject);
+                TryTransitionState(queuedActions[i].eventObject, queuedActions[i].gameObject);
+                TryInvokeActionOnState(queuedActions[i].eventObject, queuedActions[i].gameObject);
 
                 UpdateChildFSM(queuedActions[i].eventObject, queuedActions[i].gameObject);
 
-                if (transitionedFromQueue || invokedFromQueue)
-                {
-                    queuedActions.RemoveAt(i);
-                }
+                queuedActions.RemoveAt(i);
             }
         }
         else
         {
-            if (action.queueable && !queuedActions.Contains(new EventObjectPairs(callingObject, action)))
+            if (action.queueable && !queuedActions.Contains(new EventObjectPairs(callingObject, action)) && action.dequeueLayer == this)
             {
                 queuedActions.Add(new EventObjectPairs(callingObject, action));
             }
