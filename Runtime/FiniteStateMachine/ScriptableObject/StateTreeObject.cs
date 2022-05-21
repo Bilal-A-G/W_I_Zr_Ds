@@ -11,32 +11,37 @@ public class StateTreeObject : ScriptableObject
     StateObject currentState;
 
     [System.NonSerialized]
-    Dictionary<EventObject, GameObject> queuedActions;
+    List<KeyValuePair<EventObject, GameObject>> queuedActions;
+
 
     private void OnEnable()
     {
         currentState = initialState;
+        queuedActions = new List<KeyValuePair<EventObject, GameObject>>();
     }
 
     public void UpdateState(EventObject action, GameObject callingObject)
     {
-        if (queuedActions == null) queuedActions = new Dictionary<EventObject, GameObject>();
+        bool transitioned = TryTransitionState(action, callingObject);
+        bool invoked = TryInvokeActionOnState(action, callingObject);
 
-        if (TryTransitionState(action, callingObject) || TryInvokeActionOnState(action, callingObject))
+        if (queuedActions.Contains(new KeyValuePair<EventObject, GameObject>(action, callingObject))) queuedActions.Remove(new KeyValuePair<EventObject, GameObject>(action, callingObject));
+
+        if (transitioned || invoked)
         {
-            foreach(KeyValuePair<EventObject, GameObject> kvp in queuedActions)
+            foreach (KeyValuePair<EventObject, GameObject> kvp in queuedActions)
             {
-                if(TryTransitionState(kvp.Key, kvp.Value) || TryInvokeActionOnState(kvp.Key, kvp.Value))
-                {
-                    queuedActions.Remove(action);
-                }
+                bool transitionedFromQueue = TryTransitionState(kvp.Key, kvp.Value);
+                bool invokedFromQueue = TryInvokeActionOnState(kvp.Key, kvp.Value);
+
+                if(transitionedFromQueue || invokedFromQueue) queuedActions.Remove(new KeyValuePair<EventObject, GameObject>(action, callingObject));
             }
         }
         else
         {
-            if (action.queueable && !queuedActions.ContainsKey(action))
+            if (action.queueable && !queuedActions.Contains(new KeyValuePair<EventObject, GameObject>(action, callingObject)))
             {
-                queuedActions.Add(action, callingObject);
+                queuedActions.Add(new KeyValuePair<EventObject, GameObject>(action, callingObject));
             }
         }
 
