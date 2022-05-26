@@ -7,15 +7,26 @@ using System.IO;
 [CustomEditor(typeof(EventObject))]
 public class EventObjectEditor : Editor
 {
+    SerializedProperty queuable;
+
+    private void OnEnable()
+    {
+        queuable = serializedObject.FindProperty("queueable");
+    }
+
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
         Rect rect = EditorGUILayout.GetControlRect();
 
-        EditorGUI.PropertyField(rect, serializedObject.FindProperty("queueable"));
+        EditorGUI.PropertyField(rect, queuable);
         
-        if (serializedObject.FindProperty("queueable").boolValue)
+        if (queuable.boolValue)
         {
-            EditorGUI.PropertyField(new Rect(rect.x, rect.y + EditorGUIUtility.singleLineHeight, rect.width, rect.height), serializedObject.FindProperty("dequeueLayer"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("dequeueLayer"));
         }
+
+        serializedObject.ApplyModifiedProperties();
     }
 }

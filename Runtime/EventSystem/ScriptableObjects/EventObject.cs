@@ -7,7 +7,7 @@ public class EventObject : ScriptableObject
 {
     public bool queueable;
 
-    public StateTreeObject dequeueLayer;
+    public List<StateTreeObject> dequeueLayer;
 
     [System.NonSerialized]
     List<EventListenerBase> subscribedListeners = new List<EventListenerBase>();

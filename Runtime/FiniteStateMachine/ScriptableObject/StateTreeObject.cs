@@ -38,9 +38,16 @@ public class StateTreeObject : ScriptableObject
         }
         else if(!transitioned && !invoked)
         {
-            if (action.queueable && !queuedActions.Contains(new EventObjectPairs(callingObject, action)) && action.dequeueLayer == this)
+            if (action.queueable && !queuedActions.Contains(new EventObjectPairs(callingObject, action)))
             {
-                queuedActions.Add(new EventObjectPairs(callingObject, action));
+                for(int i = 0; i < action.dequeueLayer.Count; i++)
+                {
+                    if(action.dequeueLayer[i] == this)
+                    {
+                        queuedActions.Add(new EventObjectPairs(callingObject, action));
+                        break;
+                    }
+                }
             }
         }
 

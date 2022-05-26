@@ -4,14 +4,14 @@ using UnityEngine;
 
 public abstract class ActionBase : ScriptableObject
 {
-    public abstract void Execute(GameObject callingObject);
+    public abstract void Execute(CachedObjectWrapper cachedObjects);
 
-    public virtual void UpdateLoop(GameObject callingObject)
+    public virtual void UpdateLoop(CachedObjectWrapper cachedObjects)
     {
         return;
     }
 
-    public virtual void FixedUpdateLoop(GameObject callingObject)
+    public virtual void FixedUpdateLoop(CachedObjectWrapper cachedObjects)
     {
         return;
     }

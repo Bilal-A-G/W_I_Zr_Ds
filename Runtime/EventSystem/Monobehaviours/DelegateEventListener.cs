@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class DelegateEventListener : EventListenerBase
 {
     public List<EventActions> eventActions;
-    public GameObject parentObject;
+    public CachedObjectWrapper cachedObjects;
 
     protected override void SubscribeToEvents()
     {
@@ -32,7 +32,7 @@ public class DelegateEventListener : EventListenerBase
 
     public override void OnInvoke(EventObject callingEvent, GameObject callingObject)
     {
-        if (callingObject != parentObject && callingObject != null) return;
+        if (callingObject != cachedObjects.GetGameObjectFromCache("Parent") && callingObject != null) return;
 
         for(int i = 0; i < eventActions.Count; i++)
         {
@@ -42,7 +42,7 @@ public class DelegateEventListener : EventListenerBase
                 {
                     for(int z = 0; z < eventActions[i].actions.Count; z++)
                     {
-                        eventActions[i].actions[z].Execute(callingObject);
+                        eventActions[i].actions[z].Execute(cachedObjects);
                     }
                 }
             }
@@ -55,7 +55,7 @@ public class DelegateEventListener : EventListenerBase
         {
             for(int v = 0; v < eventActions[i].actions.Count; v++)
             {
-                eventActions[i].actions[v].UpdateLoop(parentObject);
+                eventActions[i].actions[v].UpdateLoop(cachedObjects);
             }
         }
     }
@@ -66,7 +66,7 @@ public class DelegateEventListener : EventListenerBase
         {
             for (int v = 0; v < eventActions[i].actions.Count; v++)
             {
-                eventActions[i].actions[v].FixedUpdateLoop(parentObject);
+                eventActions[i].actions[v].FixedUpdateLoop(cachedObjects);
             }
         }
     }
@@ -77,4 +77,41 @@ public struct EventActions
 {
     public List<EventObject> events;
     public List<ActionBase> actions;
+}
+
+[System.Serializable]
+public struct CachedObjects
+{
+    public GameObject cachedObject;
+    public string key;
+
+    public GameObject GetValueFromKey(string key)
+    {
+        if (key == this.key)
+        {
+            return cachedObject;
+        }
+
+        return null;
+    }
+}
+
+[System.Serializable]
+public struct CachedObjectWrapper
+{
+    public List<CachedObjects> cache;
+
+    public GameObject GetGameObjectFromCache(string key)
+    {
+        GameObject currentObject;
+
+        for(int i = 0; i < cache.Count; i++)
+        {
+            currentObject = cache[i].GetValueFromKey(key);
+            if (currentObject != null) return currentObject;
+        }
+
+        Debug.LogError("Key " + key + " not found in cache, did you forget to assign it?");
+        return null;
+    }
 }
