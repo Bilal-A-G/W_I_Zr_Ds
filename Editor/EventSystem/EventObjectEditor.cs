@@ -8,19 +8,20 @@ using System.IO;
 public class EventObjectEditor : Editor
 {
     SerializedProperty queuable;
+    SerializedProperty global;
 
     private void OnEnable()
     {
         queuable = serializedObject.FindProperty("queueable");
+        global = serializedObject.FindProperty("global");
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
 
-        Rect rect = EditorGUILayout.GetControlRect();
-
-        EditorGUI.PropertyField(rect, queuable);
+        EditorGUILayout.PropertyField(global);
+        EditorGUILayout.PropertyField(queuable);
         
         if (queuable.boolValue)
         {

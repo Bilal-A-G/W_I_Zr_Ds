@@ -32,7 +32,7 @@ public class DelegateEventListener : EventListenerBase
 
     public override void OnInvoke(EventObject callingEvent, GameObject callingObject)
     {
-        if (callingObject != cachedObjects.GetGameObjectFromCache("Parent") && callingObject != null) return;
+        if (callingObject != cachedObjects.GetGameObjectFromCache("Parent") && !callingEvent.global && callingObject != null) return;
 
         for(int i = 0; i < eventActions.Count; i++)
         {

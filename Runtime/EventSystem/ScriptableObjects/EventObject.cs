@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Event", menuName = "Events/Event Object")]
 public class EventObject : ScriptableObject
 {
+    public bool global;
     public bool queueable;
 
     public List<StateTreeObject> dequeueLayer;
