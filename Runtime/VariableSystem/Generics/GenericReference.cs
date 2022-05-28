@@ -14,9 +14,9 @@ public class GenericReference<T>
     [SerializeField]
     T overrideValue;
 
-    public T GetValue() => useOverride ? overrideValue : variableValue.GetValue();
+    public T GetValue(CachedObjectWrapper cachedObjects) => useOverride ? overrideValue : variableValue.GetValue(cachedObjects);
 
-    public void SetValue(T value) 
+    public void SetValue(T value, CachedObjectWrapper cachedObjects) 
     {
         if (useOverride)
         {
@@ -24,12 +24,7 @@ public class GenericReference<T>
         }
         else
         {
-            variableValue.SetValue(value);
+            variableValue.SetValue(value, cachedObjects);
         }
-    }
-    
-    public static implicit operator T(GenericReference<T> refrence)
-    {
-        return refrence.GetValue();
     }
 }
