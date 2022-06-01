@@ -53,8 +53,6 @@ public class StateTreeObject : ScriptableObject
             }
         }
 
-        currentStateObject = currentState.GetValue(cachedObjects);
-
         UpdateChildFSM(action, callingObject);
     }
 
@@ -67,6 +65,8 @@ public class StateTreeObject : ScriptableObject
 
     bool TryTransitionState(EventObject action, GameObject callingObject)
     {
+        currentStateObject = currentState.GetValue(cachedObjects);
+
         bool success = false;
         StateObject transitionTo = null;
 
@@ -102,6 +102,8 @@ public class StateTreeObject : ScriptableObject
 
     bool TryInvokeActionOnState(EventObject action, GameObject callingObject)
     {
+        currentStateObject = currentState.GetValue(cachedObjects);
+
         for (int i = 0; i < currentStateObject.stateActions.Count; i++)
         {
             if (action == currentStateObject.stateActions[i].action)
