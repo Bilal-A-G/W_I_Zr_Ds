@@ -12,28 +12,25 @@ public class StateTreeObject : ScriptableObject
 
     List<EventObjectPairs> queuedActions;
 
-    CachedObjectWrapper cachedObjects;
-
 
     private void OnEnable()
     {
         queuedActions = new List<EventObjectPairs>();
-        currentStateObject = currentState.GetValue(cachedObjects);
     }
 
-    public void UpdateState(EventObject action, GameObject callingObject)
+    public void UpdateState(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)
     {
-        bool transitioned = TryTransitionState(action, callingObject);
-        bool invoked = TryInvokeActionOnState(action, callingObject);
+        bool transitioned = TryTransitionState(action, callingObject, cachedObjects);
+        bool invoked = TryInvokeActionOnState(action, callingObject, cachedObjects);
 
         if (transitioned)
         {
             for(int i = 0; i < queuedActions.Count; i++)
             {
-                TryTransitionState(queuedActions[i].eventObject, queuedActions[i].gameObject);
-                TryInvokeActionOnState(queuedActions[i].eventObject, queuedActions[i].gameObject);
+                TryTransitionState(queuedActions[i].eventObject, queuedActions[i].gameObject, cachedObjects);
+                TryInvokeActionOnState(queuedActions[i].eventObject, queuedActions[i].gameObject, cachedObjects);
 
-                UpdateChildFSM(queuedActions[i].eventObject, queuedActions[i].gameObject);
+                UpdateChildFSM(queuedActions[i].eventObject, queuedActions[i].gameObject, cachedObjects);
 
                 queuedActions.RemoveAt(i);
             }
@@ -53,17 +50,17 @@ public class StateTreeObject : ScriptableObject
             }
         }
 
-        UpdateChildFSM(action, callingObject);
+        UpdateChildFSM(action, callingObject, cachedObjects);
     }
 
-    void UpdateChildFSM(EventObject action, GameObject callingObject)
+    void UpdateChildFSM(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)
     {
         if (currentStateObject.stateChild == null) return;
 
-        currentStateObject.stateChild.UpdateState(action, callingObject);
+        currentStateObject.stateChild.UpdateState(action, callingObject, cachedObjects);
     }
 
-    bool TryTransitionState(EventObject action, GameObject callingObject)
+    bool TryTransitionState(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)
     {
         currentStateObject = currentState.GetValue(cachedObjects);
 
@@ -100,7 +97,7 @@ public class StateTreeObject : ScriptableObject
         return false;
     }
 
-    bool TryInvokeActionOnState(EventObject action, GameObject callingObject)
+    bool TryInvokeActionOnState(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)
     {
         currentStateObject = currentState.GetValue(cachedObjects);
 
