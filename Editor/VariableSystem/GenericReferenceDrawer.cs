@@ -124,3 +124,9 @@ public class GenericRefrenceBoolDrawer: GenericReferenceDrawerWrapper<bool>
 {
 
 }
+
+[CustomPropertyDrawer(typeof(GenericReference<StateObject>))]
+public class GenericRefrenceStateDrawer : GenericReferenceDrawerWrapper<StateObject>
+{
+
+}

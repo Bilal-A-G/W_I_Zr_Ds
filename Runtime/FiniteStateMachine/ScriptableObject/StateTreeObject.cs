@@ -6,17 +6,19 @@ using UnityEngine;
 public class StateTreeObject : ScriptableObject
 {
     [SerializeField]
-    StateObject initialState;
+    GenericReference<StateObject> currentState;
 
-    StateObject currentState;
+    StateObject currentStateObject;
 
     List<EventObjectPairs> queuedActions;
+
+    CachedObjectWrapper cachedObjects;
 
 
     private void OnEnable()
     {
-        currentState = initialState;
         queuedActions = new List<EventObjectPairs>();
+        currentStateObject = currentState.GetValue(cachedObjects);
     }
 
     public void UpdateState(EventObject action, GameObject callingObject)
@@ -51,14 +53,16 @@ public class StateTreeObject : ScriptableObject
             }
         }
 
+        currentStateObject = currentState.GetValue(cachedObjects);
+
         UpdateChildFSM(action, callingObject);
     }
 
     void UpdateChildFSM(EventObject action, GameObject callingObject)
     {
-        if (currentState.stateChild == null) return;
+        if (currentStateObject.stateChild == null) return;
 
-        currentState.stateChild.UpdateState(action, callingObject);
+        currentStateObject.stateChild.UpdateState(action, callingObject);
     }
 
     bool TryTransitionState(EventObject action, GameObject callingObject)
@@ -66,11 +70,11 @@ public class StateTreeObject : ScriptableObject
         bool success = false;
         StateObject transitionTo = null;
 
-        for (int i = 0; i < currentState.stateTransitions.Count; i++)
+        for (int i = 0; i < currentStateObject.stateTransitions.Count; i++)
         {
-            if (currentState.stateTransitions[i].action == action)
+            if (currentStateObject.stateTransitions[i].action == action)
             {
-                transitionTo = currentState.stateTransitions[i].stateObject;
+                transitionTo = currentStateObject.stateTransitions[i].stateObject;
                 success = true;
                 break;
             }
@@ -78,9 +82,9 @@ public class StateTreeObject : ScriptableObject
 
         if (success)
         {
-            for(int i = 0; i < currentState.onStateExit.Count; i++)
+            for(int i = 0; i < currentStateObject.onStateExit.Count; i++)
             {
-                currentState.onStateExit[i].Invoke(callingObject);
+                currentStateObject.onStateExit[i].Invoke(callingObject);
             }
 
             for(int i = 0; i < transitionTo.onStateEnter.Count; i++)
@@ -88,7 +92,7 @@ public class StateTreeObject : ScriptableObject
                 transitionTo.onStateEnter[i].Invoke(callingObject);
             }
 
-            currentState = transitionTo;
+            currentState.SetValue(transitionTo, cachedObjects);
 
             return true;
         }
@@ -98,11 +102,11 @@ public class StateTreeObject : ScriptableObject
 
     bool TryInvokeActionOnState(EventObject action, GameObject callingObject)
     {
-        for (int i = 0; i < currentState.stateActions.Count; i++)
+        for (int i = 0; i < currentStateObject.stateActions.Count; i++)
         {
-            if (action == currentState.stateActions[i].action)
+            if (action == currentStateObject.stateActions[i].action)
             {
-                currentState.stateActions[i].GetTranslatedEvent().Invoke(callingObject);
+                currentStateObject.stateActions[i].GetTranslatedEvent().Invoke(callingObject);
                 return true;
             }
         }
