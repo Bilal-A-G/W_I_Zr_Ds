@@ -3,6 +3,9 @@ A collection of tools to make developing games in Unity easier, designed to be d
 
 Inspired by / based off concepts from [Ryan Hipple's 2017 Unite Talk](https://www.youtube.com/watch?v=raQ3iHhE_Kk) and [Unity's Open Project, Chop Chop](https://github.com/UnityTechnologies/open-project-1)
 
+# Installation
+This repository is a Unity package, add it to your project via the repository's URL, or SSH if you prefer
+
 # License
 MIT, see the [LICENSE](https://github.com/Bilal-A-G/W_I_Zr_Ds-Tools/blob/main/LICENSE.md) for more info
 
