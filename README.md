@@ -1,5 +1,5 @@
 # W_I_Zr_Ds Tools
-A collection of tools to make developing games in Unity easier
+A collection of tools to make developing games in Unity easier, designed to be designer friendly as well as easily extensible
 
 Inspired by / based off concepts from [Ryan Hipple's 2017 Unite Talk](https://www.youtube.com/watch?v=raQ3iHhE_Kk) and [Unity's Open Project, Chop Chop](https://github.com/UnityTechnologies/open-project-1)
 
