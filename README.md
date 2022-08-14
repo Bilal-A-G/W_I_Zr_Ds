@@ -21,7 +21,7 @@ This repository is a Unity package, add it to your project via the repository's 
 IMPORTANT: This package only works correctly in Unity versions 2021.1.14+ but doesn't work past 2021.2.0, this will be patched in the future
 
 ## Documentation
-Documentation is available [here](https://docs.google.com/document/d/1lG2Zbk8EXbMWVwaXpbdJHl1F8dMi8VwPtAhQN3ZnvIo/edit?usp=sharing)
+Documentation is available [here](https://bilal-a-g.github.io/W_I_Zr_Ds)
 
 ## License
 MIT, see the [LICENSE](https://github.com/Bilal-A-G/W_I_Zr_Ds-Tools/blob/main/LICENSE.md) for more info
