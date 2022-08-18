@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Can be invoked by a fsm or directly. Once invoked, calls the onInvoke function on
+//all subscribed event listeners
 [CreateAssetMenu(fileName = "New Event", menuName = "Events/Event Object")]
 public class EventObject : ScriptableObject
 {
@@ -36,6 +38,4 @@ public class EventObject : ScriptableObject
             subscribedListeners[i].OnInvoke(this, callingObject);
         }
     }
-
-    public void InvokeInEditor() => Invoke(null);
 }

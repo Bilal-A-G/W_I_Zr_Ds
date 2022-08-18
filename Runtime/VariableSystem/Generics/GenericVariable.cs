@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Used to create variables
 public abstract class GenericVariable<T> : GenericValue<T>
 {
     public T value;

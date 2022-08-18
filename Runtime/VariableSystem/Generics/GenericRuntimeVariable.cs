@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Same as a generic variable but for runtime variables / individual state
 public class GenericRuntimeVariable<T> : GenericValue<T>
 {
     public GenericReference<string> valueKey;

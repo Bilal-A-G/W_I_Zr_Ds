@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+//Allows a class to use generic values
 [Serializable]
 public class GenericReference<T>
 {

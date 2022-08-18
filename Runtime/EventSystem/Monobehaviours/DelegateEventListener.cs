@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+//Standard event listener implementation, when an event is invoked,
+//it executes all actions corresponding to said event
 public class DelegateEventListener : EventListenerBase
 {
     public List<EventActions> eventActions;
     public CachedObjectWrapper cachedObjects;
 
+    //Subscribes to all events in eventActions
     protected override void SubscribeToEvents()
     {
         for (int i = 0; i < eventActions.Count; i++)
@@ -19,6 +22,7 @@ public class DelegateEventListener : EventListenerBase
         }
     }
 
+    //Unsubscribes from all events in eventActions
     protected override void UnSubscribeFromEvents()
     {
         for (int i = 0; i < eventActions.Count; i++)
@@ -30,6 +34,7 @@ public class DelegateEventListener : EventListenerBase
         }
     }
 
+    //Executes all actions corresponding to an event when invoked
     public override void OnInvoke(EventObject callingEvent, GameObject callingObject)
     {
         if (callingObject != cachedObjects.GetGameObjectFromCache("Parent") && !callingEvent.global && callingObject != null) return;
@@ -49,6 +54,7 @@ public class DelegateEventListener : EventListenerBase
         }
     }
 
+    //Delivers update loop to events
     private void Update()
     {
         for(int i = 0; i < eventActions.Count; i++)
@@ -60,6 +66,7 @@ public class DelegateEventListener : EventListenerBase
         }
     }
 
+    //Delivers fixed update loop to events
     private void FixedUpdate()
     {
         for (int i = 0; i < eventActions.Count; i++)
@@ -72,52 +79,11 @@ public class DelegateEventListener : EventListenerBase
     }
 }
 
+//Struct for event action pairs, basically just an inspector visible dictionary with a fancy
+//property drawer
 [System.Serializable]
 public struct EventActions
 {
     public List<EventObject> events;
     public List<ActionBase> actions;
-}
-
-[System.Serializable]
-public struct CachedObjects
-{
-    public GameObject cachedObject;
-    public string key;
-
-    public CachedObjects(GameObject cachedObject, string key)
-    {
-        this.key = key;
-        this.cachedObject = cachedObject;
-    }
-
-    public GameObject GetValueFromKey(string key)
-    {
-        if (key == this.key)
-        {
-            return cachedObject;
-        }
-
-        return null;
-    }
-}
-
-[System.Serializable]
-public struct CachedObjectWrapper
-{
-    public List<CachedObjects> cache;
-
-    public GameObject GetGameObjectFromCache(string key)
-    {
-        GameObject currentObject;
-
-        for(int i = 0; i < cache.Count; i++)
-        {
-            currentObject = cache[i].GetValueFromKey(key);
-            if (currentObject != null) return currentObject;
-        }
-
-        Debug.LogError("Key " + key + " not found in cache, did you forget to assign it?");
-        return null;
-    }
 }

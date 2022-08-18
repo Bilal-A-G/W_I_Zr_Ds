@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Event listener base class that every event listener must implement,
+//Base class that every event listener must implement,
 //listeners listen for when specific events are invoked and then execute the actions corresponding to the event
 public abstract class EventListenerBase : MonoBehaviour
 {

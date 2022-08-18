@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Holds a state object, transitions, and updates it. A layer in the hierarchical state machine system 
 [CreateAssetMenu(fileName = "New Tree", menuName = "FSM/State Layer Object")]
 public class StateLayerObject : ScriptableObject
 {
@@ -12,29 +13,36 @@ public class StateLayerObject : ScriptableObject
 
     List<EventObjectPairs> queuedActions;
 
-
+    //Clears/initializes queuedActions on enable
     private void OnEnable()
     {
         queuedActions = new List<EventObjectPairs>();
     }
 
+    //Handles transitioning current state based on the event the function is called with,
+    //and propogates events as well if the currrent state allows it
     public void UpdateState(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)
     {
+        //Tries to transition and then propogate the event
         bool transitioned = TryTransitionState(action, callingObject, cachedObjects);
-        bool invoked = TryInvokeActionOnState(action, callingObject, cachedObjects);
+        bool invoked = TryPropogateActionOnState(action, callingObject, cachedObjects);
 
+        //If current state was transitioned, then tries to transition, propogate,
+        //and update the child of everything in queued actions
         if (transitioned)
         {
             for(int i = 0; i < queuedActions.Count; i++)
             {
                 TryTransitionState(queuedActions[i].eventObject, queuedActions[i].gameObject, cachedObjects);
-                TryInvokeActionOnState(queuedActions[i].eventObject, queuedActions[i].gameObject, cachedObjects);
+                TryPropogateActionOnState(queuedActions[i].eventObject, queuedActions[i].gameObject, cachedObjects);
 
                 UpdateChildFSM(queuedActions[i].eventObject, queuedActions[i].gameObject, cachedObjects);
 
                 queuedActions.RemoveAt(i);
             }
         }
+        //If the current state didn't transition or propogate the event,
+        //then add it to the queued actions list according to its configurations
         else if(!transitioned && !invoked)
         {
             if (action.queueable && !queuedActions.Contains(new EventObjectPairs(callingObject, action)))
@@ -50,6 +58,7 @@ public class StateLayerObject : ScriptableObject
             }
         }
 
+        //Updates the child of current state
         UpdateChildFSM(action, callingObject, cachedObjects);
     }
 
@@ -97,7 +106,7 @@ public class StateLayerObject : ScriptableObject
         return false;
     }
 
-    bool TryInvokeActionOnState(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)
+    bool TryPropogateActionOnState(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)
     {
         currentStateObject = currentState.GetValue(cachedObjects);
 

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Stores all data needed for a state layer to transition it and propogate events as well
+//as what events to propogate when the state has been transitioned to and away from
 [CreateAssetMenu(fileName = "New State", menuName = "FSM/State Object")]
 public class StateObject : ScriptableObject
 {
