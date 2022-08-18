@@ -11,7 +11,7 @@ public class StateObject : ScriptableObject
     public List<StateActionTranslationPairs> stateActions;
     public List<EventStatePairs> stateTransitions;
 
-    public StateTreeObject stateChild;
+    public StateLayerObject childLayer;
 }
 
 [System.Serializable]

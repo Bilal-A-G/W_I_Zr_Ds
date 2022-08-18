@@ -1,12 +1,8 @@
 {
-    "name": "com.bilal.wizrds-tools.Editor",
+    "name": "com.bilal.wizrds",
     "rootNamespace": "",
-    "references": [
-        "GUID:cc080499af2619e4b9c8b14f4d2f0c1d"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

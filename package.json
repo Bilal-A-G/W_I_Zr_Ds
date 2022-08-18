@@ -1,8 +1,8 @@
 {
-  "name": "com.bilal.wizards",
-  "version": "1.2.1",
+  "name": "com.bilal.wizrds",
+  "version": "1.2.2",
   "displayName": "W_I_Zr_Ds",
-  "description": "A collection of tools to make developing games in Unity easier",
+  "description": "An architecture solution for the Unity game engine",
   "unity": "2019.1",
   "author": 
   {

@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Tree", menuName = "FSM/State Tree Object")]
-public class StateTreeObject : ScriptableObject
+[CreateAssetMenu(fileName = "New Tree", menuName = "FSM/State Layer Object")]
+public class StateLayerObject : ScriptableObject
 {
     [SerializeField]
     GenericReference<StateObject> currentState;
@@ -55,9 +55,9 @@ public class StateTreeObject : ScriptableObject
 
     void UpdateChildFSM(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)
     {
-        if (currentStateObject.stateChild == null) return;
+        if (currentStateObject.childLayer == null) return;
 
-        currentStateObject.stateChild.UpdateState(action, callingObject, cachedObjects);
+        currentStateObject.childLayer.UpdateState(action, callingObject, cachedObjects);
     }
 
     bool TryTransitionState(EventObject action, GameObject callingObject, CachedObjectWrapper cachedObjects)

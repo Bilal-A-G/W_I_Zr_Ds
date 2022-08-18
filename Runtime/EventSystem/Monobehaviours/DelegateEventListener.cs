@@ -85,6 +85,12 @@ public struct CachedObjects
     public GameObject cachedObject;
     public string key;
 
+    public CachedObjects(GameObject cachedObject, string key)
+    {
+        this.key = key;
+        this.cachedObject = cachedObject;
+    }
+
     public GameObject GetValueFromKey(string key)
     {
         if (key == this.key)

@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class GenericReferenceDrawerWrapper<T> : PropertyDrawer
+public class GenericReferenceDrawer<T> : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -59,31 +59,31 @@ public class GenericReferenceDrawerWrapper<T> : PropertyDrawer
 }
 
 [CustomPropertyDrawer(typeof(GenericReference<int>))]
-public class GenericRefrenceIntDrawer : GenericReferenceDrawerWrapper<int>
+public class GenericRefrenceIntDrawer : GenericReferenceDrawer<int>
 {
     public override string GetAlias(string[] fullName) => "Int";
 }
 
 [CustomPropertyDrawer(typeof(GenericReference<float>))]
-public class GenericRefrenceFloatDrawer : GenericReferenceDrawerWrapper<float>
+public class GenericRefrenceFloatDrawer : GenericReferenceDrawer<float>
 {
     public override string GetAlias(string[] fullName) => "Float";
 }
 
 [CustomPropertyDrawer(typeof(GenericReference<string>))]
-public class GenericRefrenceStringDrawer : GenericReferenceDrawerWrapper<string>
+public class GenericRefrenceStringDrawer : GenericReferenceDrawer<string>
 {
 
 }
 
 [CustomPropertyDrawer(typeof(GenericReference<Object>))]
-public class GenericRefrenceObjDrawer : GenericReferenceDrawerWrapper<Object>
+public class GenericRefrenceObjDrawer : GenericReferenceDrawer<Object>
 {
 
 }
 
 [CustomPropertyDrawer(typeof(GenericReference<EnumVariable>))]
-public class GenericRefrenceEnumDrawer : GenericReferenceDrawerWrapper<EnumVariable>
+public class GenericRefrenceEnumDrawer : GenericReferenceDrawer<EnumVariable>
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -120,13 +120,13 @@ public class GenericRefrenceEnumDrawer : GenericReferenceDrawerWrapper<EnumVaria
 }
 
 [CustomPropertyDrawer(typeof(GenericReference<bool>))]
-public class GenericRefrenceBoolDrawer: GenericReferenceDrawerWrapper<bool>
+public class GenericRefrenceBoolDrawer: GenericReferenceDrawer<bool>
 {
 
 }
 
 [CustomPropertyDrawer(typeof(GenericReference<StateObject>))]
-public class GenericRefrenceStateDrawer : GenericReferenceDrawerWrapper<StateObject>
+public class GenericRefrenceStateDrawer : GenericReferenceDrawer<StateObject>
 {
 
 }
