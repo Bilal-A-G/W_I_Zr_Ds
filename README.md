@@ -1,3 +1,7 @@
+![](https://img.shields.io/github/license/Bilal-A-G/W_I_Zr_Ds?style=for-the-badge)
+![](https://img.shields.io/badge/Made%20with-Unity-57b9d3.svg?style=for-the-badge&logo=unity)
+![](https://img.shields.io/github/languages/top/Bilal-A-G/W_I_Zr_Ds?style=for-the-badge)
+
 # W_I_Zr_Ds
 W_I_Zr_Ds (Wizards) is a data-driven architecture solution for the Unity game engine that maximizes reusability, simplicity, and designer friendliness
 
